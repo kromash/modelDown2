@@ -8,7 +8,7 @@ save_plot_image <- function(file_name, data, options){
   width <- getPlotWidth(options, "pb.plot_width")
 
   pl <- do.call(plot, data)
-  ggsave(file_name, pl, png, width = width, height = 500, limitsize = FALSE)
+  ggsave(file_name, pl, svg, width = width, height = 5, limitsize = TRUE)
 }
 
 generate_prediction_breakdown_data <- function(explainer, observation_number){
@@ -18,13 +18,13 @@ generate_prediction_breakdown_data <- function(explainer, observation_number){
 
 create_prediction_breakdown_file <- function(observation_number, explainers, img_folder, label, is_worst, options){
   breakdown_data <- lapply(explainers, generate_prediction_breakdown_data, observation_number)
-  img_filename <- paste('prediction_breakdown_', observation_number, '_', label,'.png', sep='')
+  img_filename <- paste('prediction_breakdown_', observation_number, '_', label,'.svg', sep='')
   img_path <- file.path(img_folder, img_filename)
 
   file.create(img_path)
   save_plot_image(img_path, breakdown_data, options)
 
-  html_table <- kable_styling(kable(explainers[[1]]$data[observation_number,], row.names = FALSE), bootstrap_options = c("responsive", "bordered", "hover"))
+  html_table <- kable_styling(kable(explainers[[1]]$data[observation_number,], row.names = TRUE), bootstrap_options = c("responsive", "bordered", "hover"))
 
   if(is_worst) {
     name_prefix <- "Worst Prediction"

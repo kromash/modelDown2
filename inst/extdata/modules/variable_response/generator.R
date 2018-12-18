@@ -6,11 +6,11 @@ save_plot_image <- function(file_name, models, options){
   width <- getPlotWidth(options, "vr.plot_width")
 
   pl <- do.call(plot, models)
-  ggsave(file_name, pl, png, width = width, height = 500, limitsize = FALSE)
+  ggsave(file_name, pl, svg, width = width, height = 5, limitsize = TRUE)
 }
 
 make_variable_plot <- function(variable_name, types, explainers, img_folder, options) {
-  img_filename <- paste('variable_response_', variable_name, '_', paste(types, collapse=''), '.png', sep='')
+  img_filename <- paste('variable_response_', variable_name, '_', paste(types, collapse=''), '.svg', sep='')
   img_path <- file.path(img_folder, img_filename)
 
   models_per_type <- lapply(types, function(type) {

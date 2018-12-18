@@ -6,12 +6,12 @@ save_plot_image <- function(file_name, models, options){
   width <- getPlotWidth(options, "mp.plot_width")
 
   pl <- do.call(plot, models)
-  ggsave(file_name, pl, png, width = width, height = 500, limitsize = FALSE)
+  ggsave(file_name, pl, svg, width = width, height = 5, limitsize = TRUE)
 }
 
 make_model_performance_plot_model <- function(explainers, img_folder, options) {
-  img_filename <- 'model_performance.png'
-  img_box_filename <- 'model_performance_box.png'
+  img_filename <- 'model_performance.svg'
+  img_box_filename <- 'model_performance_box.svg'
   img_path <- file.path(img_folder, img_filename)
   img_box_path <- file.path(img_folder, img_box_filename)
 
@@ -23,10 +23,10 @@ make_model_performance_plot_model <- function(explainers, img_folder, options) {
   width <- getPlotWidth(options, "mp.plot_width")
 
   pl <- do.call(plot, models)
-  ggsave(img_path, pl, png, width = width, height = 500, limitsize = FALSE)
+  ggsave(img_path, pl, svg, width = width, height = 5, limitsize = TRUE)
   models$geom <- "boxplot"
   pl_box <- do.call(plot, models)
-  ggsave(img_box_path, pl_box, png, width = width, height = 400, limitsize = FALSE)
+  ggsave(img_box_path, pl_box, svg, width = width, height = 5, limitsize = TRUE)
 
   list(img_filename = img_filename,
        img_box_filename = img_box_filename)

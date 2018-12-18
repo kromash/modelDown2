@@ -79,7 +79,7 @@ modelDown <- function(..., modules = c("model_performance", "variable_importance
 }
 
 
-getPlotWidth <- function(options, plot_with_variable = NULL, default_width = 800) {
+getPlotWidth <- function(options, plot_with_variable = NULL, default_width = 6) {
   if(!is.null(plot_with_variable)) {
     width <- options[[plot_with_variable]]
   }

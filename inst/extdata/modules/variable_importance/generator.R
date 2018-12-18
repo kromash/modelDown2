@@ -7,7 +7,7 @@ save_plot_image <- function(file_name, models, options){
   width <- getPlotWidth(options, "vi.plot_width")
 
   pl <- do.call(plot, models)
-  ggsave(file_name, pl, png, width = width, height = 500, limitsize = FALSE)
+  ggsave(file_name, pl, svg, width = width, height = 5, limitsize = TRUE)
 }
 
 make_variable_importance_table <- function(explainers) {
@@ -38,7 +38,7 @@ make_variable_importance_table <- function(explainers) {
 }
 
 create_plot_image <- function(explainers, img_folder, options){
-  img_filename <- 'variable_importance.png'
+  img_filename <- 'variable_importance.svg'
   img_path <- file.path(img_folder, img_filename)
 
   models <- lapply(explainers, function(explainer) {
@@ -59,7 +59,7 @@ generator <- function(explainers, options, img_folder) {
     display_name='Variable Importance',
     name='variable_importance',
     data=list(
-      img_filename='variable_importance.png',
+      img_filename='variable_importance.svg',
       dataframe=variable_importance_table
     )
   )
