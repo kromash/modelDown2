@@ -39,9 +39,9 @@
 #' HR_glm_model <- glm(left~., HR_data, family = "binomial")
 #' explainer_glm <- explain(HR_glm_model, data=HR_data, y = HR_data$left)
 #'
-#' modelDown::modelDown(explainer_ranger, explainer_glm) #all defaults
+#' modelDown2::modelDown(explainer_ranger, explainer_glm) #all defaults
 #'
-#' modelDown::modelDown(explainer_glm,
+#' modelDown2::modelDown(explainer_glm,
 #'   modules = c("model_performance", "variable_importance",
 #'               "variable_response", "prediction_breakdown"),
 #'   output_folder = "modelDown_output",
@@ -69,7 +69,7 @@ modelDown <- function(..., modules = c("model_performance", "variable_importance
   for(explainer in explainers){
     saveRDS(explainer, file = paste0(output_folder,"/explainers/", explainer$label, ".rda"))
   }
-  copyAssets(system.file("extdata", "template", package = "modelDown"), output_folder)
+  copyAssets(system.file("extdata", "template", package = "modelDown2"), output_folder)
 
   generated_modules <- generateModules(modules, output_folder, explainers, options)
 
@@ -109,7 +109,7 @@ copyAssets <- function(from, to) {
 generateModules <- function(modules_names, output_folder, explainers, options) {
   return(lapply(modules_names, function(module_name) {
     print(paste("Generating ", module_name, "...", sep = ""))
-    generator_path <- system.file("extdata", "modules", module_name, "generator.R", package = "modelDown")
+    generator_path <- system.file("extdata", "modules", module_name, "generator.R", package = "modelDown2")
     generator_env <- makeGeneratorEnvironment()
     source(generator_path, local=generator_env)
     data <- generator_env$generator(explainers, options, file.path(output_folder, "img"))
@@ -150,7 +150,7 @@ renderPage <- function(content, modules, output_path) {
 
   iteratelist(data[['menu_links']], name='menu_links')
 
-  base_template_path <- system.file("extdata", "template", "base_template.html", package = "modelDown")
+  base_template_path <- system.file("extdata", "template", "base_template.html", package = "modelDown2")
   base_template <- readLines(base_template_path)
   page <- whisker.render(base_template, data)
   file.create(output_path)
@@ -160,7 +160,7 @@ renderPage <- function(content, modules, output_path) {
 renderModules <- function(modules, output_folder) {
   lapply(modules, function(module) {
     module_path <- file.path("modules", module[['name']])
-    content_template <- readLines(system.file("extdata", module_path, "template.html", package = "modelDown"))
+    content_template <- readLines(system.file("extdata", module_path, "template.html", package = "modelDown2"))
 
     content <- whisker.render(content_template, module[['data']])
     output_path <- file.path(output_folder, paste(module[['name']], ".html", sep=""))
@@ -182,7 +182,7 @@ renderMainPage <- function(modules, output_folder, explainers) {
     columns_count = ncol(explainers[[1]]$data)
   )
 
-  content_template <- readLines(system.file("extdata", "template", "index_template.html", package = "modelDown"))
+  content_template <- readLines(system.file("extdata", "template", "index_template.html", package = "modelDown2"))
   content <- whisker.render(content_template, main_page_data)
   output_path <- file.path(output_folder, "index.html")
   renderPage(content, modules, output_path)
